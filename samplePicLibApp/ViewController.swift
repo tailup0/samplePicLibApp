@@ -34,20 +34,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        defer { picker.dismiss(animated: true, completion: nil) }
 
-        if let myImageAny = info[UIImagePickerControllerOriginalImage] {
-            if let myImage = myImageAny as? UIImage {
-                myImageView.image = myImage
-                ud.set(UIImageJPEGRepresentation(myImage, 0), forKey: "imagekey")
-                ud.synchronize()
-            }
-        }
+        guard let myImageAny = info[UIImagePickerControllerOriginalImage] else { return }
+        guard let myImage = myImageAny as? UIImage else { return }
+        myImageView.image = myImage
+        ud.set(UIImageJPEGRepresentation(myImage, 0), forKey: "imagekey")
+        ud.synchronize()
         
-        picker.dismiss(animated: true, completion: nil)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+        defer { picker.dismiss(animated: true, completion: nil) }
     }
 
 }
